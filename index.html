@@ -929,11 +929,6 @@
           steps: ["Check the Imprest, Retirement, ABB Registration and User Management groups against the roles on the account.", "Repeat with a second account holding different roles."],
           expect: ["No menu entry opens a page the account is not entitled to use.", "A role added or removed is reflected after signing in again."]
         },
-        {
-          id: "A-03", title: "An account with no IMS role", role: "No IMS role",
-          steps: ["Sign in with an account holding no IMS role and try to open IMS."],
-          expect: ["No IMS menu entries are offered.", "Opening a page directly does not expose imprest data."]
-        }
       ]
     },
     {

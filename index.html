@@ -1,0 +1,1173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imprest System Acceptance Tests</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<style>
+  :root {
+    --paper: #f2f5f6;
+    --surface: #ffffff;
+    --surface-sunk: #eaf0f1;
+    --ink: #12222b;
+    --ink-soft: #46606b;
+    --ink-faint: #7b929a;
+    --line: #d3dee1;
+    --line-soft: #e4ebed;
+    --accent: #0e5b68;
+    --accent-ink: #0a454f;
+    --accent-soft: #e2eff1;
+    --amber: #a4601b;
+    --amber-soft: #f7ecdf;
+    --good: #2c6b45;
+    --good-soft: #e0efe5;
+    --crit: #9c2f2f;
+    --crit-soft: #f6e4e3;
+    --shadow: 0 1px 2px rgba(18, 34, 43, .06), 0 8px 24px rgba(18, 34, 43, .05);
+
+    --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #0d1619;
+      --surface: #122027;
+      --surface-sunk: #0f1b21;
+      --ink: #e6edef;
+      --ink-soft: #9ab0b8;
+      --ink-faint: #6d858d;
+      --line: #24383f;
+      --line-soft: #1b2b31;
+      --accent: #4fb3c4;
+      --accent-ink: #7fcdda;
+      --accent-soft: #10323a;
+      --amber: #d89043;
+      --amber-soft: #2e2317;
+      --good: #63b37f;
+      --good-soft: #14291d;
+      --crit: #e0736f;
+      --crit-soft: #2c1817;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #0d1619;
+    --surface: #122027;
+    --surface-sunk: #0f1b21;
+    --ink: #e6edef;
+    --ink-soft: #9ab0b8;
+    --ink-faint: #6d858d;
+    --line: #24383f;
+    --line-soft: #1b2b31;
+    --accent: #4fb3c4;
+    --accent-ink: #7fcdda;
+    --accent-soft: #10323a;
+    --amber: #d89043;
+    --amber-soft: #2e2317;
+    --good: #63b37f;
+    --good-soft: #14291d;
+    --crit: #e0736f;
+    --crit-soft: #2c1817;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .3);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+
+  /* ---------------------------------------------------------- progress bar */
+  .progress {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--paper) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .progress__inner {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .progress__label {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .progress__track {
+    flex: 1 1 200px;
+    height: 6px;
+    min-width: 160px;
+    border-radius: 3px;
+    background: var(--surface-sunk);
+    overflow: hidden;
+  }
+
+  .progress__fill {
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width .25s ease;
+  }
+
+  .progress__counts { display: flex; gap: 12px; font-size: 12px; font-family: var(--mono); }
+  .progress__counts b { font-weight: 500; }
+  .count-pass { color: var(--good); }
+  .count-fail { color: var(--crit); }
+
+  .btn-reset {
+    font: inherit;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--ink-soft);
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 3px 10px;
+    cursor: pointer;
+  }
+  .btn-reset:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* --------------------------------------------------------------- header */
+  header { padding: 56px 0 8px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(34px, 5vw, 46px);
+    line-height: 1.08;
+    letter-spacing: -.015em;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 64ch;
+    margin: 0 0 32px;
+  }
+
+  /* ------------------------------------------------------------ run sheet */
+  .runsheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+
+  .runsheet__cell { background: var(--surface); padding: 14px 16px; }
+
+  .runsheet__key {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .runsheet input {
+    font: inherit;
+    font-family: var(--mono);
+    font-size: 14px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px dashed var(--line);
+    background: transparent;
+    color: var(--ink);
+    padding: 2px 0;
+  }
+  .runsheet input:focus { outline: none; border-bottom-color: var(--accent); }
+  .runsheet__static { font-family: var(--mono); font-size: 14px; color: var(--ink); }
+
+  /* ----------------------------------------------------------- stage rail */
+  .rail-intro { margin: 0 0 14px; color: var(--ink-soft); max-width: 64ch; }
+
+  .rail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 0;
+    margin: 0 0 14px;
+    list-style: none;
+  }
+
+  .rail li {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 6px 11px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+
+  .rail li span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+  }
+
+  .rail li.is-gate {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .rail-note {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin: 0 0 44px;
+    max-width: 68ch;
+  }
+
+  /* -------------------------------------------------------------- modules */
+  .module { margin-bottom: 52px; scroll-margin-top: 64px; }
+
+  .module__head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .module__id {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--accent);
+  }
+
+  .module__head h2 {
+    font-family: var(--serif);
+    font-size: 25px;
+    font-weight: 600;
+    margin: 0;
+    flex: 1 1 auto;
+    letter-spacing: -.01em;
+  }
+
+  .module__count {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .module__blurb {
+    color: var(--ink-soft);
+    font-size: 14px;
+    margin: 12px 0 22px;
+    max-width: 68ch;
+  }
+
+  /* ------------------------------------------------------------ test case */
+  .case {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+
+  .case[data-result="pass"] { border-left: 3px solid var(--good); }
+  .case[data-result="fail"] { border-left: 3px solid var(--crit); }
+
+  .case__head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .case__id {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 3px;
+    padding: 2px 7px;
+    white-space: nowrap;
+  }
+
+  .case__title {
+    font-weight: 600;
+    font-size: 15.5px;
+    flex: 1 1 260px;
+    margin: 0;
+  }
+
+  .role {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-soft);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 2px 7px;
+    white-space: nowrap;
+  }
+
+  .role--foreign { color: var(--amber); border-color: var(--amber); background: var(--amber-soft); }
+
+  .case__pre {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+    background: var(--surface-sunk);
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 0 0 12px;
+  }
+
+  .case__pre b {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin-right: 6px;
+  }
+
+  .case__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+
+  @media (max-width: 720px) {
+    .case__grid { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  .case__grid h4 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin: 0 0 8px;
+  }
+
+  .case ol, .case ul { margin: 0; padding-left: 18px; }
+  .case li { margin-bottom: 5px; font-size: 14px; }
+  .case li:last-child { margin-bottom: 0; }
+
+  .case ul { list-style: none; padding-left: 0; }
+
+  .case ul li {
+    position: relative;
+    padding-left: 18px;
+  }
+
+  .case ul li::before {
+    content: "";
+    position: absolute;
+    left: 3px;
+    top: .55em;
+    width: 6px;
+    height: 6px;
+    border: 1.5px solid var(--good);
+    border-radius: 1px;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: .88em;
+    background: var(--surface-sunk);
+    border-radius: 3px;
+    padding: 1px 5px;
+    color: var(--accent-ink);
+    overflow-wrap: anywhere;
+  }
+
+  /* ---------------------------------------------------------- result strip */
+  .result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+
+  .marks { display: flex; gap: 6px; }
+
+  .mark {
+    font: inherit;
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: .04em;
+    padding: 4px 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .mark:hover { border-color: var(--ink-soft); }
+  .mark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .mark[aria-pressed="true"][data-mark="pass"] {
+    background: var(--good-soft);
+    border-color: var(--good);
+    color: var(--good);
+  }
+
+  .mark[aria-pressed="true"][data-mark="fail"] {
+    background: var(--crit-soft);
+    border-color: var(--crit);
+    color: var(--crit);
+  }
+
+  .mark[aria-pressed="true"][data-mark="na"] {
+    background: var(--surface-sunk);
+    border-color: var(--ink-faint);
+    color: var(--ink);
+  }
+
+  .result input[type="text"] {
+    flex: 1 1 220px;
+    font: inherit;
+    font-size: 13.5px;
+    border: none;
+    border-bottom: 1px dashed var(--line);
+    background: transparent;
+    color: var(--ink);
+    padding: 3px 0;
+    min-width: 0;
+  }
+
+  .result input[type="text"]:focus { outline: none; border-bottom-color: var(--accent); }
+  .result input[type="text"]::placeholder { color: var(--ink-faint); }
+
+  /* ------------------------------------------------------------- contents */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 20px 22px;
+    margin-bottom: 48px;
+  }
+
+  .toc h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin: 0 0 14px;
+  }
+
+  .toc ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2px 24px;
+  }
+
+  .toc a {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    padding: 5px 0;
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .toc a:hover { color: var(--accent); }
+  .toc a span:first-child { font-family: var(--mono); font-size: 12px; color: var(--accent); }
+  .toc a span:last-child { margin-left: auto; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-faint);
+    max-width: 68ch;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+
+  @media print {
+    .progress, .btn-reset { display: none; }
+    body { background: #fff; font-size: 11pt; }
+    .case { break-inside: avoid; box-shadow: none; }
+    .module { break-before: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="progress">
+  <div class="progress__inner">
+    <span class="progress__label">Run progress</span>
+    <span class="progress__track"><span class="progress__fill" id="fill"></span></span>
+    <span class="progress__counts">
+      <span class="count-pass">Pass <b id="nPass">0</b></span>
+      <span class="count-fail">Fail <b id="nFail">0</b></span>
+      <span>N/A <b id="nNa">0</b></span>
+      <span id="nTotal"></span>
+    </span>
+    <button class="btn-reset" id="reset" type="button">Clear my marks</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Imprest Management System &middot; User acceptance testing</p>
+    <h1>Imprest System Acceptance Tests</h1>
+    <p class="lede">
+      A scenario-by-scenario script for testing IMS end to end &mdash; raising an imprest through
+      all three types, moving it up the approval chain, handing it to a payment officer, posting it
+      to Epicor, and retiring it. Work down each module in order and mark every case as you go.
+    </p>
+
+    <div class="runsheet">
+      <div class="runsheet__cell">
+        <span class="runsheet__key">Tester</span>
+        <input type="text" id="meta-tester" placeholder="Your name">
+      </div>
+      <div class="runsheet__cell">
+        <span class="runsheet__key">Date of run</span>
+        <input type="text" id="meta-date" placeholder="dd/mm/yyyy">
+      </div>
+      <div class="runsheet__cell">
+        <span class="runsheet__key">Environment</span>
+        <input type="text" id="meta-env" placeholder="UAT / staging">
+      </div>
+      <div class="runsheet__cell">
+        <span class="runsheet__key">Branch</span>
+        <span class="runsheet__static">imprest-main</span>
+      </div>
+    </div>
+
+    <p class="rail-intro">
+      Most scenarios below depend on where the imprest sits in the approval route. An imprest moves
+      through these stages in order, and several rules key off position rather than a single stage &mdash;
+      <b>Extend</b>, for instance, appears only once the imprest is <em>past</em> Accounting Officer and the
+      return date has not yet passed.
+    </p>
+
+    <ol class="rail">
+      <li><span>1</span>Submitted</li>
+      <li><span>2</span>Supervisor</li>
+      <li><span>3</span>Reviewer</li>
+      <li class="is-gate"><span>4</span>Accounting Officer</li>
+      <li><span>5</span>Manager of Finance</li>
+      <li><span>6</span>Deputy of Finance</li>
+      <li><span>7</span>Director of Finance</li>
+      <li class="is-gate"><span>8</span>Incharge of Payment</li>
+      <li><span>9</span>Epicor</li>
+    </ol>
+
+    <p class="rail-note">
+      The two highlighted stages gate behaviour tested below: Accounting Officer is the extension
+      threshold, and Incharge of Payment is where an imprest is assigned to an officer before it can
+      be posted.
+    </p>
+
+    <nav class="toc">
+      <h3>Modules</h3>
+      <ol id="toc"></ol>
+    </nav>
+  </header>
+
+  <main id="modules"></main>
+
+  <footer>
+    Expected results describe the system as it currently behaves on <code>imprest-main</code>. Where a
+    case fails, record the reference number of the imprest you were working on in the note field &mdash;
+    it is the fastest way to trace what happened. Your marks and notes are saved in this browser only;
+    they are not shared with other testers.
+  </footer>
+</div>
+
+<script>
+  const MODULES = [
+    {
+      id: "A",
+      name: "Access, roles and dashboard",
+      blurb: "IMS reads its roles from the portal token. Every card and menu entry below is gated on one, so these cases are worth running with at least two different accounts.",
+      cases: [
+        {
+          id: "A-01", title: "Sign in and reach the IMS dashboard", role: "Any IMS role",
+          steps: ["Sign in to the internal portal.", "Open the Imprest Management System."],
+          expect: ["The dashboard loads with cards for the roles you hold.", "The left menu lists only the sections your roles allow."]
+        },
+        {
+          id: "A-02", title: "Assigned Imprests card appears for payment officers only", role: "Off_Incharge_Payment",
+          pre: "Have one account holding <code>Off_Incharge_Payment</code> or <code>Of_Incharge_Paymnt_R</code>, and one holding neither.",
+          steps: ["Open the dashboard as the officer.", "Open it again as the account without that role."],
+          expect: ["The officer sees the Assigned Imprests card with a live count.", "The other account does not see the card at all.", "The count matches the number of rows on Assigned Imprests."]
+        },
+        {
+          id: "A-03", title: "Assigned Retirements card", role: "InchargeOfRetirement",
+          steps: ["Open the dashboard as an incharge of retirement."],
+          expect: ["The Assigned Retirements card shows, with a count matching its list.", "The card heading reads in the same blue as the cards beside it."]
+        },
+        {
+          id: "A-04", title: "Menu sections match role", role: "Various",
+          steps: ["Check the Imprest, Retirement, ABB Registration and User Management groups against the roles held."],
+          expect: ["No menu entry opens a page the account is not entitled to use."]
+        }
+      ]
+    },
+    {
+      id: "B",
+      name: "Imprest creation — Step one",
+      blurb: "Step one decides the shape of everything after it: Travel imprests collect a journey and members, while Normal and Micro Value collect particulars and book their money on the ABB step instead.",
+      cases: [
+        {
+          id: "B-01", title: "Raise a local travel imprest", role: "Any staff",
+          steps: ["Imprest &rarr; Imprest List &rarr; New Imprest.", "Choose imprest type <b>Travel</b> and request type <b>Local</b>.", "Fill title/purpose, from and to region, dates, board type, entity type.", "Save and continue."],
+          expect: ["Title / Purpose of Imprest is fully readable, not clipped.", "Board Type is required and blocks saving while empty.", "Region fields suggest places as you type.", "The imprest is created and step two opens."]
+        },
+        {
+          id: "B-02", title: "Raise a foreign travel imprest", role: "Any staff", foreign: true,
+          steps: ["Choose request type <b>Foreign Travel</b>.", "Fill to country, outfit allowance, visa and currency.", "Save."],
+          expect: ["Outfit Allowance, Visa and Currency sit together on one row.", "Visa and Outfit Allowance are Yes/No dropdowns.", "To Country replaces To Region.", "The saved imprest carries the chosen currency."]
+        },
+        {
+          id: "B-03", title: "Distance and transit note", role: "Any staff",
+          steps: ["On a local travel imprest, enter a from and to region a long bus ride apart.", "Set travel mode to Bus."],
+          expect: ["Distance and travel time appear once both ends are filled.", "A note says the journey may include transit time when it runs over six hours by bus.", "A failed lookup shows a message but does not block saving."]
+        },
+        {
+          id: "B-04", title: "Raise a Micro Value imprest", role: "Any staff",
+          steps: ["Choose imprest type <b>Micro Value</b>.", "Fill purpose, micro number and amount.", "Add two or more item lines, each with its own account code, quantity and unit price.", "Save."],
+          expect: ["Each line totals quantity &times; unit price.", "Quantity and price are required and must be above zero.", "Amount fields group thousands with commas as you type.", "Travel fields (regions, dates, board type) are not asked for."]
+        },
+        {
+          id: "B-05", title: "Account lookup after choosing an activity", role: "Any staff",
+          pre: "Normal or Micro Value imprest only &mdash; a Travel imprest picks its ABBs on the ABB step.",
+          steps: ["Select company, ABB owner, then an activity.", "Watch the account code list populate."],
+          expect: ["The matching accounts load for that activity.", "No lookup fires on a Travel imprest."]
+        },
+        {
+          id: "B-06", title: "Reopen an imprest for update", role: "Owner",
+          pre: "Use an imprest already saved at step one.",
+          steps: ["Open the imprest and return to step one."],
+          expect: ["Imprest Type, Request Type, Entity Type and Board Type are greyed and cannot be changed.", "Every other field is editable and holds what was saved.", "On a Micro Value imprest the purpose, micro number, amount and all item lines come back filled in."]
+        }
+      ]
+    },
+    {
+      id: "C",
+      name: "Imprest creation — Members",
+      blurb: "Members carry the money: per diem and incidental from the staff service, fare from the legs they travel. A foreign imprest is the exception — it carries one local leg only, the ride to the international airport.",
+      cases: [
+        {
+          id: "C-01", title: "Add a TRA staff member", role: "Owner",
+          steps: ["On step member, enter an employee number and fetch the staff details.", "Fill the journey and save."],
+          expect: ["Name, department, tax region, bank details and salary scale fill in from the lookup.", "Incidental amount is greyed and cannot be typed over.", "Per diem, incidental, fare and on-transit all group thousands.", "The member appears in the list below with their job title under their name."]
+        },
+        {
+          id: "C-02", title: "Add a non-staff traveller", role: "Owner",
+          steps: ["Switch to the non-staff form.", "Fill full name, gender, phone, email, work station and bank details.", "Choose a TRAS Band.", "Fill the journey and fare, then save."],
+          expect: ["The TRAS Band list is populated from the title service.", "There is no Job Title field on this form.", "Fare accepts a typed amount and groups thousands."]
+        },
+        {
+          id: "C-03", title: "Several legs on a local journey", role: "Owner",
+          steps: ["Add a member with one leg, then use Add Trip for a second leg."],
+          expect: ["The new leg starts where the last one ended, on the day it ended.", "Each leg takes its own travel mode, location type and fare.", "An Official Vehicle leg forces the fare to zero and says why.", "The Add Trip dialog shows distance, travel time and a transit note instead of asking for an on-transit amount."]
+        },
+        {
+          id: "C-04", title: "Foreign imprest carries one leg only", role: "Owner", foreign: true,
+          steps: ["On a foreign imprest, add a member.", "Fill the ride from the traveller's street to the international airport.", "Try to add a second leg."],
+          expect: ["The destination is chosen from the international airport list, not typed.", "Only Taxi and Official Vehicle are offered as travel modes.", "The leg must arrive on the day it departs.", "A second leg is refused, saying the journey to that city belongs to a separate imprest.", "The note above the member list says the fare is paid in TZS."]
+        },
+        {
+          id: "C-05", title: "Trip fare always reads in shillings", role: "Owner", foreign: true,
+          steps: ["On a foreign imprest denominated in USD, add a member with a fare.", "Read the member list row."],
+          expect: ["Trip fare shows as TZS regardless of the imprest currency.", "Per diem and incidental still show in the member's own currency."]
+        },
+        {
+          id: "C-06", title: "Update a member", role: "Owner",
+          steps: ["Open the three-dot menu on a member row and choose Update.", "Move through Member, Entitlements, Payment and Trips with the step controls."],
+          expect: ["The dialog moves section by section and never scrolls.", "Incidental is not editable.", "Travel mode defaults to Bus where none was stored.", "From and to region come back as stored.", "Other expenditures is saved."]
+        },
+        {
+          id: "C-07", title: "Update a member on a foreign imprest", role: "Owner", foreign: true,
+          steps: ["Open Update on a foreign imprest's member and go to Trips."],
+          expect: ["Only the fare can be changed.", "Dates, from, to, travel mode and location type are greyed.", "Saving sends the leg back unchanged apart from the fare."]
+        },
+        {
+          id: "C-08", title: "Remove a leg and remove a member", role: "Owner",
+          steps: ["Delete a single leg from a member with two.", "Then delete a member outright."],
+          expect: ["The update dialog closes first so the confirmation is visible.", "The member list reloads after confirming.", "Deleting a member removes all of their legs."]
+        },
+        {
+          id: "C-09", title: "No members yet", role: "Owner",
+          steps: ["Open step member on an imprest with no members."],
+          expect: ["A panel says no member has been added, in place of an empty table."]
+        }
+      ]
+    },
+    {
+      id: "D",
+      name: "Imprest creation — ABB and particulars",
+      blurb: "Where the money is booked. Categories worked out from the members are not typed; everything else is. On a foreign imprest the local fare and the journey abroad are booked separately and in different currencies.",
+      cases: [
+        {
+          id: "D-01", title: "Book the per diem ABB", role: "Owner",
+          steps: ["On a travel imprest, select the per diem, incidental and day allowances ABB.", "Add it."],
+          expect: ["No amount box appears.", "The ABB is booked with the members' total.", "The same category cannot be added twice &mdash; it shows as already added."]
+        },
+        {
+          id: "D-02", title: "Book Fare - Local", role: "Owner",
+          steps: ["Select the Fare - Local ABB."],
+          expect: ["No amount box appears.", "A panel names the figure it is about to book &mdash; the total of the members' trip fares.", "It is booked in TZS."]
+        },
+        {
+          id: "D-03", title: "Book Fare - Foreign", role: "Owner", foreign: true,
+          steps: ["On a foreign imprest, select the Fare - Foreign ABB.", "Type the fare for the journey abroad and add it."],
+          expect: ["An amount box appears, prefixed with the imprest currency.", "A note says it is booked in the currency the imprest was raised in.", "There is no separate currency picker."]
+        },
+        {
+          id: "D-04", title: "Particulars on a Normal imprest", role: "Owner",
+          steps: ["On a Normal imprest, add two particulars with amounts and currencies.", "Edit one, then remove the other."],
+          expect: ["The list shows S/N, particular, ABB code, amount and currency.", "Row actions sit behind a single three-dot menu.", "Edit and Remove are disabled on a row not yet saved."]
+        },
+        {
+          id: "D-05", title: "Fare booked warning", role: "Owner",
+          steps: ["On a travel imprest carrying a fare, press Next without booking a fare ABB."],
+          expect: ["A prompt asks whether to continue, naming the fare amount.", "It asks rather than refuses &mdash; continuing is allowed."]
+        }
+      ]
+    },
+    {
+      id: "E",
+      name: "Memo, activity plan, attachments and preview",
+      blurb: "The supporting documents, then the preview the owner submits from.",
+      cases: [
+        {
+          id: "E-01", title: "Attach a memo and an activity plan", role: "Owner",
+          steps: ["Work through the memo step and the activity plan step.", "Attach a supporting file."],
+          expect: ["The memo and plan save against the imprest.", "The attachment uploads and is listed."]
+        },
+        {
+          id: "E-02", title: "Preview before submitting", role: "Owner",
+          steps: ["Open the last step.", "Expand and collapse each section in turn."],
+          expect: ["Sections open and close one at a time, predictably.", "Every figure is formatted with thousands and a currency.", "Members show their job title.", "Budget is not shown for Normal and Micro Value imprests.", "On a Micro Value imprest the purpose, micro number, amount and item table are all filled in."]
+        },
+        {
+          id: "E-03", title: "Submit the imprest", role: "Owner",
+          steps: ["Submit from the preview."],
+          expect: ["The imprest leaves draft and appears in the list at the first approval stage.", "It can no longer be deleted from the list."]
+        }
+      ]
+    },
+    {
+      id: "F",
+      name: "Imprest list",
+      blurb: "The owner's own view of everything raised, with the search the API supports and the row actions each imprest's state allows.",
+      cases: [
+        {
+          id: "F-01", title: "Active and cancelled tabs", role: "Any staff",
+          steps: ["Open the imprest list and switch between tabs."],
+          expect: ["Each tab pages independently and keeps its own search.", "Paging moves through pages rather than re-showing page one."]
+        },
+        {
+          id: "F-02", title: "Search the list", role: "Any staff",
+          steps: ["Search by reference number, then by request type, travel mode, holder name and to country.", "Open More filters and use a region field.", "Clear all filters."],
+          expect: ["Each filter narrows the whole list, not just the page on screen.", "Region and country fields suggest values the way step one does.", "The filter row does not scroll sideways.", "Clearing returns the full list from page one."]
+        },
+        {
+          id: "F-03", title: "Extension and Extended tags", role: "Any staff",
+          steps: ["Find an imprest raised as an extension and one that has been extended."],
+          expect: ["Each carries its own tag beside the reference number.", "Hovering a tag explains which side of the extension it is on."]
+        },
+        {
+          id: "F-04", title: "Facilitated column", role: "Any staff",
+          steps: ["Compare a safari imprest with an empty to-region against a non-safari imprest."],
+          expect: ["An empty to-region falls back to the country, on safari imprests only.", "Neither the facilitation nor the number of days shows on a non-safari imprest."]
+        },
+        {
+          id: "F-05", title: "Row actions", role: "Owner",
+          steps: ["Open the three-dot menu on a draft, on an approved imprest, and on one whose return date has passed."],
+          expect: ["View is always offered.", "Delete shows only on a draft.", "Extend shows only past Accounting Officer and on or before the return date."]
+        },
+        {
+          id: "F-06", title: "Extend an imprest", role: "Owner",
+          steps: ["Choose Extend, set the new from and to dates, and submit."],
+          expect: ["The extension is raised and step one of the new imprest opens.", "The original is tagged as extended."]
+        }
+      ]
+    },
+    {
+      id: "G",
+      name: "Approvals",
+      blurb: "Each stage sees a different set of buttons. Run this module once per approving role, on the same imprest, to walk it up the chain.",
+      cases: [
+        {
+          id: "G-01", title: "Supervisor forwards for review", role: "Supervisor",
+          steps: ["Open the imprest from Imprest Approval.", "Choose Forward for Review, add a comment and confirm."],
+          expect: ["Only Forward for Review and Return are offered at this stage.", "The imprest moves to Reviewer and leaves the supervisor's queue."]
+        },
+        {
+          id: "G-02", title: "Reviewer approves or forwards", role: "Reviewer",
+          steps: ["Open the same imprest as reviewer."],
+          expect: ["Approve and Forward for Approval are both offered.", "Return is still available."]
+        },
+        {
+          id: "G-03", title: "Approve or reject", role: "Accounting Officer &rarr; Director of Finance",
+          steps: ["Open the imprest at each stage from Accounting Officer up to Director of Finance.", "Approve at each, then reject one on a separate imprest."],
+          expect: ["Approve Imprest and Reject Imprest are offered at every stage in that range.", "A rejection stops the imprest and records the comment.", "The stage name advances by one on each approval."]
+        },
+        {
+          id: "G-04", title: "Return an imprest to the owner", role: "Supervisor / Reviewer",
+          steps: ["Choose Return Imprest before the imprest passes Accounting Officer.", "Sign in as the owner."],
+          expect: ["The owner can open and correct it.", "The comment given on return is visible."]
+        },
+        {
+          id: "G-05", title: "Read an imprest under approval", role: "Any approver",
+          steps: ["Open an imprest and work through its tabs."],
+          expect: ["Members shows each member's bank name, account number and account name.", "Basic Details and Budget are not shown on Normal and Micro Value imprests.", "Memo and Attachment tabs are always present, saying so when empty.", "Title and description appear under Basic Details."]
+        }
+      ]
+    },
+    {
+      id: "H",
+      name: "Assignment and posting to Epicor",
+      blurb: "At Incharge of Payment the imprest is handed to a named officer, who alone can post it. The same dialog serves retirements.",
+      cases: [
+        {
+          id: "H-01", title: "Assign an officer", role: "Incharge_Payment",
+          pre: "An imprest sitting at Incharge of Payment.",
+          steps: ["Open the imprest and choose Assign Officer.", "Pick an officer the section has used before, add a comment, and assign."],
+          expect: ["The button only appears at this stage and for this role.", "A confirmation names the officer.", "The assignment panel now shows who holds it."]
+        },
+        {
+          id: "H-02", title: "Assign an officer never used before", role: "Incharge_Payment",
+          steps: ["Choose Assign Officer and switch to looking an officer up.", "Enter an employee number and search."],
+          expect: ["The staff record is found and can be chosen.", "A single match is selected automatically."]
+        },
+        {
+          id: "H-03", title: "Reassign", role: "Incharge_Payment",
+          steps: ["Open an imprest already assigned and choose Reassign Officer.", "Pick a different officer."],
+          expect: ["The dialog says who currently holds it.", "The panel shows the new officer as active and the previous one as past."]
+        },
+        {
+          id: "H-04", title: "Officer sees their own queue", role: "Off_Incharge_Payment",
+          steps: ["Sign in as the assigned officer and open Assigned Imprests.", "Search by reference number, then clear."],
+          expect: ["Only imprests assigned to this officer are listed.", "The page carries the standard back bar, search card and table.", "Row actions sit behind a three-dot menu.", "An empty result says whether it is empty or merely filtered."]
+        },
+        {
+          id: "H-05", title: "Post to Epicor", role: "Off_Incharge_Payment",
+          steps: ["Open an assigned imprest from the queue and choose Post to Epicor.", "Then open the same imprest as a different officer."],
+          expect: ["Post to Epicor is offered only to the officer it is assigned to.", "Another officer at the same stage does not see the button.", "After posting, the imprest appears on Epicor Imprest Status."]
+        }
+      ]
+    },
+    {
+      id: "I",
+      name: "Retirement",
+      blurb: "Retirement mirrors the imprest side, including assignment. Run the assignment cases here against the retirement endpoints.",
+      cases: [
+        {
+          id: "I-01", title: "Raise and list a retirement", role: "Owner",
+          steps: ["Open Retirement List and raise a retirement against a funded imprest."],
+          expect: ["The retirement is created and listed.", "Its figures group thousands."]
+        },
+        {
+          id: "I-02", title: "Approve a retirement", role: "Approvers",
+          steps: ["Open Retirement Approval Request and act on the retirement."],
+          expect: ["Actions match the stage, as on the imprest side.", "Row actions sit behind a three-dot menu."]
+        },
+        {
+          id: "I-03", title: "Assign a retirement to an officer", role: "InchargeOfRetirement",
+          steps: ["Open a retirement at the assignment stage and assign an officer.", "Reassign it to a second officer."],
+          expect: ["The dialog is the same one used for imprests, worded for retirements.", "The assignment history panel lists current and past holders."]
+        },
+        {
+          id: "I-04", title: "Assigned retirements queue", role: "Assigned officer",
+          steps: ["Open Assigned Retirements."],
+          expect: ["The page matches Assigned Imprests in layout and behaviour.", "Only retirements assigned to this officer are listed."]
+        }
+      ]
+    },
+    {
+      id: "J",
+      name: "Outstanding imprest and Epicor status",
+      blurb: "Two read-only views fed from Epicor. Both were brought onto the standard loading and error treatment, which is what these cases check.",
+      cases: [
+        {
+          id: "J-01", title: "Outstanding imprest", role: "Any staff",
+          steps: ["Open Imprest &rarr; Outstanding Imprest."],
+          expect: ["A card with “Information loading, Please wait..” and a progress bar shows while it loads.", "Totals for debts, outstanding and paid amounts are shown above the table.", "Search narrows the table.", "With no debts, the page says so rather than showing an empty table."]
+        },
+        {
+          id: "J-02", title: "Epicor imprest status", role: "Any staff",
+          steps: ["Open Imprest &rarr; Epicor Imprest Status."],
+          expect: ["The same loading card shows as on the imprest list.", "Posted imprests are listed with their Epicor number and status."]
+        },
+        {
+          id: "J-03", title: "A failed load reports itself", role: "Any staff",
+          pre: "Ask the team to take the Epicor endpoint down, or test with the network disconnected.",
+          steps: ["Open each of the two pages above while the service is unavailable."],
+          expect: ["An error dialog shows the message the API returned, not a generic one.", "The page offers a way to retry.", "No page is left blank with no explanation."]
+        }
+      ]
+    },
+    {
+      id: "K",
+      name: "Across the whole system",
+      blurb: "Cross-cutting checks worth running once at the end, against whatever imprests the earlier modules produced.",
+      cases: [
+        {
+          id: "K-01", title: "Amounts group thousands everywhere", role: "Owner",
+          steps: ["Walk from step one to the preview, typing a five or six figure amount into every money field you meet."],
+          expect: ["Every amount field groups thousands with commas as you type.", "Saved figures come back grouped, not as raw digits.", "No saved amount is ever stored or sent with its commas.", "Totals and halved figures (the infant allowance) calculate correctly from grouped input."]
+        },
+        {
+          id: "K-02", title: "Slow or dropped connection", role: "Owner",
+          steps: ["Add or update a member on a slow connection."],
+          expect: ["The request retries rather than failing at the first dropped connection.", "A genuine failure reports the API's own message."]
+        },
+        {
+          id: "K-03", title: "Back navigation", role: "Any",
+          steps: ["Use the Back control at the top of each list page."],
+          expect: ["Back returns to the previous page rather than the dashboard every time."]
+        },
+        {
+          id: "K-04", title: "An account with no IMS role", role: "No IMS role",
+          steps: ["Sign in with an account holding no IMS role and try to open IMS."],
+          expect: ["No IMS menu entries or dashboard cards are offered.", "Opening a page directly does not expose data."]
+        }
+      ]
+    }
+  ];
+
+  const KEY = "ims-uat-v1";
+
+  function loadState() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) || "{}");
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function saveState(state) {
+    try {
+      localStorage.setItem(KEY, JSON.stringify(state));
+    } catch (e) {
+      /* a browser with site data blocked still runs the page, it just forgets */
+    }
+  }
+
+  let state = loadState();
+
+  const totalCases = MODULES.reduce(function (n, m) { return n + m.cases.length; }, 0);
+  document.getElementById("nTotal").textContent = "of " + totalCases;
+
+  const toc = document.getElementById("toc");
+  const modules = document.getElementById("modules");
+
+  MODULES.forEach(function (mod) {
+    const li = document.createElement("li");
+    li.innerHTML =
+      '<a href="#mod-' + mod.id + '"><span>' + mod.id + '</span>' +
+      '<span>' + mod.name + '</span>' +
+      '<span>' + mod.cases.length + '</span></a>';
+    toc.appendChild(li);
+
+    const section = document.createElement("section");
+    section.className = "module";
+    section.id = "mod-" + mod.id;
+
+    const head = document.createElement("div");
+    head.className = "module__head";
+    head.innerHTML =
+      '<span class="module__id">' + mod.id + '</span>' +
+      '<h2>' + mod.name + '</h2>' +
+      '<span class="module__count">' + mod.cases.length + ' cases</span>';
+    section.appendChild(head);
+
+    const blurb = document.createElement("p");
+    blurb.className = "module__blurb";
+    blurb.textContent = mod.blurb;
+    section.appendChild(blurb);
+
+    mod.cases.forEach(function (tc) {
+      section.appendChild(renderCase(tc));
+    });
+
+    modules.appendChild(section);
+  });
+
+  function renderCase(tc) {
+    const el = document.createElement("article");
+    el.className = "case";
+    el.id = tc.id;
+
+    const saved = state[tc.id] || {};
+    if (saved.result) el.dataset.result = saved.result;
+
+    const roleClass = tc.foreign ? "role role--foreign" : "role";
+
+    let html =
+      '<div class="case__head">' +
+        '<span class="case__id">' + tc.id + '</span>' +
+        '<h3 class="case__title">' + tc.title + '</h3>' +
+        '<span class="' + roleClass + '">' + tc.role + '</span>' +
+      '</div>';
+
+    if (tc.pre) {
+      html += '<p class="case__pre"><b>Before you start</b>' + tc.pre + '</p>';
+    }
+
+    html +=
+      '<div class="case__grid">' +
+        '<div><h4>Steps</h4><ol>' +
+          tc.steps.map(function (s) { return "<li>" + s + "</li>"; }).join("") +
+        '</ol></div>' +
+        '<div><h4>Expected result</h4><ul>' +
+          tc.expect.map(function (s) { return "<li>" + s + "</li>"; }).join("") +
+        '</ul></div>' +
+      '</div>';
+
+    html +=
+      '<div class="result">' +
+        '<div class="marks">' +
+          mark("pass", "Pass", saved.result) +
+          mark("fail", "Fail", saved.result) +
+          mark("na", "N/A", saved.result) +
+        '</div>' +
+        '<input type="text" placeholder="Note — reference no, what you saw" ' +
+          'value="' + (saved.note || "").replace(/"/g, "&quot;") + '">' +
+      '</div>';
+
+    el.innerHTML = html;
+
+    el.querySelectorAll(".mark").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const value = btn.dataset.mark;
+        const entry = state[tc.id] || {};
+        entry.result = entry.result === value ? null : value;
+        state[tc.id] = entry;
+
+        el.querySelectorAll(".mark").forEach(function (other) {
+          other.setAttribute("aria-pressed", String(other.dataset.mark === entry.result));
+        });
+
+        if (entry.result) {
+          el.dataset.result = entry.result;
+        } else {
+          delete el.dataset.result;
+        }
+
+        saveState(state);
+        tally();
+      });
+    });
+
+    el.querySelector('input[type="text"]').addEventListener("input", function (e) {
+      const entry = state[tc.id] || {};
+      entry.note = e.target.value;
+      state[tc.id] = entry;
+      saveState(state);
+    });
+
+    return el;
+  }
+
+  function mark(value, label, current) {
+    return '<button type="button" class="mark" data-mark="' + value + '" ' +
+      'aria-pressed="' + String(current === value) + '">' + label + "</button>";
+  }
+
+  function tally() {
+    let pass = 0, fail = 0, na = 0;
+    Object.keys(state).forEach(function (id) {
+      const r = state[id] && state[id].result;
+      if (r === "pass") pass++;
+      else if (r === "fail") fail++;
+      else if (r === "na") na++;
+    });
+
+    document.getElementById("nPass").textContent = pass;
+    document.getElementById("nFail").textContent = fail;
+    document.getElementById("nNa").textContent = na;
+    document.getElementById("fill").style.width =
+      ((pass + fail + na) / totalCases * 100) + "%";
+  }
+
+  ["tester", "date", "env"].forEach(function (field) {
+    const input = document.getElementById("meta-" + field);
+    input.value = (state.__meta && state.__meta[field]) || "";
+    input.addEventListener("input", function () {
+      state.__meta = state.__meta || {};
+      state.__meta[field] = input.value;
+      saveState(state);
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", function () {
+    if (!window.confirm("Clear every mark and note on this device?")) return;
+    state = {};
+    saveState(state);
+    window.location.reload();
+  });
+
+  tally();
+</script>
+</body>
+</html>

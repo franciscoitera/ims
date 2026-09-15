@@ -542,12 +542,206 @@
     max-width: 68ch;
   }
 
+
+  /* -------------------------------------------------------- routing table */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    margin: 0 0 14px;
+  }
+
+  .routing {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .routing th, .routing td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line-soft);
+    white-space: nowrap;
+  }
+
+  .routing thead th {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 400;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .routing tbody tr:last-child td { border-bottom: none; }
+  .routing td:first-child { font-weight: 600; }
+  .routing td:last-child { color: var(--accent); }
+  .routing tr.is-region td { background: var(--amber-soft); }
+  .routing tr.is-region td:last-child { color: var(--amber); }
+
+
+  /* ------------------------------------------------------- saved reports */
+  .reports {
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    margin-bottom: 40px;
+    overflow: hidden;
+  }
+
+  .reports__head {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface-sunk);
+  }
+
+  .reports__head h3 {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 400;
+    margin: 0;
+  }
+
+  .reports__hint {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin: 0;
+    flex: 1 1 200px;
+  }
+
+  .reports__empty {
+    padding: 22px 18px;
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+
+  .report-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  .report-row:last-child { border-bottom: none; }
+
+  .report-row__name {
+    font-weight: 600;
+    flex: 1 1 200px;
+    min-width: 0;
+  }
+
+  .report-row__name small {
+    display: block;
+    font-weight: 400;
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--ink-faint);
+  }
+
+  .report-row__tally {
+    display: flex;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  .report-row__acts { display: flex; gap: 6px; }
+
+  .mini {
+    font: inherit;
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: var(--surface);
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .mini:hover { border-color: var(--accent); color: var(--accent); }
+  .mini:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .mini--danger:hover { border-color: var(--crit); color: var(--crit); }
+
+  .btn-save {
+    font: inherit;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--surface);
+    background: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    padding: 3px 12px;
+    cursor: pointer;
+  }
+  .btn-save:hover { background: var(--accent-ink); border-color: var(--accent-ink); }
+
+  /* ------------------------------------------------------- report viewer */
+  .viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 24px;
+    overflow: auto;
+  }
+
+  .viewer[hidden] { display: none; }
+
+  .viewer__panel {
+    background: var(--surface);
+    border-radius: 8px;
+    max-width: 900px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, .3);
+  }
+
+  .viewer__bar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    border-radius: 8px 8px 0 0;
+  }
+
+  .viewer__bar strong { flex: 1 1 auto; font-size: 14px; }
+  .viewer__body { padding: 4px 18px 24px; }
+
+  .viewer__body table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .viewer__body th, .viewer__body td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
+  .viewer__body thead th { font-family: var(--mono); font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-faint); font-weight: 400; }
+  .viewer__body h4 { font-family: var(--serif); font-size: 17px; margin: 26px 0 6px; }
+  .viewer__body .r-pass { color: var(--good); font-family: var(--mono); font-size: 12px; }
+  .viewer__body .r-fail { color: var(--crit); font-family: var(--mono); font-size: 12px; }
+  .viewer__body .r-na, .viewer__body .r-none { color: var(--ink-faint); font-family: var(--mono); font-size: 12px; }
+
   @media (prefers-reduced-motion: reduce) {
     * { transition: none !important; }
   }
 
   @media print {
-    .progress, .btn-reset { display: none; }
+    .progress, .btn-reset, .reports, .viewer { display: none; }
     body { background: #fff; font-size: 11pt; }
     .case { break-inside: avoid; box-shadow: none; }
     .module { break-before: auto; }
@@ -565,6 +759,7 @@
       <span>N/A <b id="nNa">0</b></span>
       <span id="nTotal"></span>
     </span>
+    <button class="btn-save" id="save" type="button">Save report</button>
     <button class="btn-reset" id="reset" type="button">Clear my marks</button>
   </div>
 </div>
@@ -598,6 +793,17 @@
       </div>
     </div>
 
+    <section class="reports" id="reports">
+      <div class="reports__head">
+        <h3>Saved reports</h3>
+        <p class="reports__hint">
+          Saving takes a snapshot of every mark and note as it stands. Download one to get a
+          standalone HTML file you can send on or keep.
+        </p>
+      </div>
+      <div id="reportList"></div>
+    </section>
+
     <p class="rail-intro">
       Most scenarios below depend on where the imprest sits in the approval route. An imprest moves
       through these stages in order, and several rules key off position rather than a single stage &mdash;
@@ -623,6 +829,62 @@
       be posted.
     </p>
 
+    <p class="rail-intro">
+      Where a request <em>enters</em> that route depends on who raised it, because the first approver is
+      always the applicant's own supervisor. Module G tests each row of this table.
+    </p>
+
+    <div class="table-wrap">
+      <table class="routing">
+        <thead>
+          <tr><th>Applicant</th><th>Goes first to</th><th>Then the Accounting Officer stage is</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Officer (HQ)</td><td>Their Manager</td><td>Accounting Officer</td></tr>
+          <tr><td>Manager / Supervisor</td><td>Director</td><td>Accounting Officer</td></tr>
+          <tr><td>Accounting Officer</td><td>DCG</td><td>&mdash;</td></tr>
+          <tr><td>DCG</td><td>CG</td><td>&mdash;</td></tr>
+          <tr><td>CG</td><td>DCG</td><td>&mdash;</td></tr>
+          <tr class="is-region"><td>Officer (Region)</td><td>Their regional supervisor</td><td>Regional Manager</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="rail-note">
+      The CG and DCG supervise each other &mdash; that pairing is deliberate, so a request from either
+      routing to the other is correct, not a fault. Retirements follow this same table.
+    </p>
+
+    <p class="rail-intro">
+      One stage in the middle is conditional. Between the Manager and the Director, whether a request
+      passes a <b>Reviewer</b> depends on the department it came from:
+    </p>
+
+    <div class="table-wrap">
+      <table class="routing">
+        <thead>
+          <tr><th>Department</th><th>After the Manager it goes to</th><th>Reviewer may</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Has a Reviewer</td>
+            <td>The Reviewer &mdash; its Deputy Director &mdash; before the Director</td>
+            <td>Forward for approval, <b>or</b> approve in place of the Accounting Officer</td>
+          </tr>
+          <tr>
+            <td>Has no Reviewer</td>
+            <td>Straight on, skipping the Reviewer stage</td>
+            <td>&mdash;</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="rail-note">
+      This is why the Reviewer stage offers both <b>Approve</b> and <b>Forward for Approval</b>: the
+      Deputy Director decides whether the request still needs the Accounting Officer.
+    </p>
+
     <nav class="toc">
       <h3>Modules</h3>
       <ol id="toc"></ol>
@@ -639,327 +901,494 @@
   </footer>
 </div>
 
+<div class="viewer" id="viewer" hidden>
+  <div class="viewer__panel">
+    <div class="viewer__bar">
+      <strong id="viewerTitle">UAT Report</strong>
+      <button class="mini" id="viewerDownload" type="button">Download this file</button>
+      <button class="mini" id="viewerClose" type="button">Close</button>
+    </div>
+    <div class="viewer__body" id="viewerBody"></div>
+  </div>
+</div>
+
 <script>
   const MODULES = [
     {
       id: "A",
-      name: "Access, roles and dashboard",
-      blurb: "IMS reads its roles from the portal token. Every card and menu entry below is gated on one, so these cases are worth running with at least two different accounts.",
+      name: "Access and roles",
+      blurb: "IMS reads its roles from the portal token, and almost everything below is gated on one. Run these with at least two accounts holding different roles.",
       cases: [
         {
-          id: "A-01", title: "Sign in and reach the IMS dashboard", role: "Any IMS role",
+          id: "A-01", title: "Sign in and reach IMS", role: "Any IMS role",
           steps: ["Sign in to the internal portal.", "Open the Imprest Management System."],
-          expect: ["The dashboard loads with cards for the roles you hold.", "The left menu lists only the sections your roles allow."]
+          expect: ["IMS opens without error.", "The left menu lists only the sections your roles allow."]
         },
         {
-          id: "A-02", title: "Assigned Imprests card appears for payment officers only", role: "Off_Incharge_Payment",
-          pre: "Have one account holding <code>Off_Incharge_Payment</code> or <code>Of_Incharge_Paymnt_R</code>, and one holding neither.",
-          steps: ["Open the dashboard as the officer.", "Open it again as the account without that role."],
-          expect: ["The officer sees the Assigned Imprests card with a live count.", "The other account does not see the card at all.", "The count matches the number of rows on Assigned Imprests."]
+          id: "A-02", title: "Menu sections match the roles held", role: "Various",
+          steps: ["Check the Imprest, Retirement, ABB Registration and User Management groups against the roles on the account.", "Repeat with a second account holding different roles."],
+          expect: ["No menu entry opens a page the account is not entitled to use.", "A role added or removed is reflected after signing in again."]
         },
         {
-          id: "A-03", title: "Assigned Retirements card", role: "InchargeOfRetirement",
-          steps: ["Open the dashboard as an incharge of retirement."],
-          expect: ["The Assigned Retirements card shows, with a count matching its list.", "The card heading reads in the same blue as the cards beside it."]
-        },
-        {
-          id: "A-04", title: "Menu sections match role", role: "Various",
-          steps: ["Check the Imprest, Retirement, ABB Registration and User Management groups against the roles held."],
-          expect: ["No menu entry opens a page the account is not entitled to use."]
+          id: "A-03", title: "An account with no IMS role", role: "No IMS role",
+          steps: ["Sign in with an account holding no IMS role and try to open IMS."],
+          expect: ["No IMS menu entries are offered.", "Opening a page directly does not expose imprest data."]
         }
       ]
     },
     {
       id: "B",
-      name: "Imprest creation — Step one",
-      blurb: "Step one decides the shape of everything after it: Travel imprests collect a journey and members, while Normal and Micro Value collect particulars and book their money on the ABB step instead.",
+      name: "Raise each imprest type, end to end",
+      blurb: "Four complete runs, one per type. Each goes from an empty form to a submitted imprest. Keep the reference number of each — later modules approve, assign and retire these same imprests.",
       cases: [
         {
-          id: "B-01", title: "Raise a local travel imprest", role: "Any staff",
-          steps: ["Imprest &rarr; Imprest List &rarr; New Imprest.", "Choose imprest type <b>Travel</b> and request type <b>Local</b>.", "Fill title/purpose, from and to region, dates, board type, entity type.", "Save and continue."],
-          expect: ["Title / Purpose of Imprest is fully readable, not clipped.", "Board Type is required and blocks saving while empty.", "Region fields suggest places as you type.", "The imprest is created and step two opens."]
+          id: "B-01", title: "Travel imprest — local", role: "Imprest holder",
+          steps: [
+            "New Imprest &rarr; type <b>Travel</b>, request type <b>Local</b>.",
+            "Fill title/purpose, from and to region, departure and return dates, board type, entity type, location type. Save.",
+            "Add at least two members, each with a journey and a fare.",
+            "On the ABB step book the per diem ABB and the Fare - Local ABB.",
+            "Attach a memo and an activity plan, then any supporting file.",
+            "Open the preview and submit."
+          ],
+          expect: [
+            "Each step saves and moves on without losing what was entered.",
+            "Members carry per diem, incidental and fare.",
+            "The preview totals match the members and the ABBs booked.",
+            "The imprest leaves draft and appears in the list at the first approval stage."
+          ]
         },
         {
-          id: "B-02", title: "Raise a foreign travel imprest", role: "Any staff", foreign: true,
-          steps: ["Choose request type <b>Foreign Travel</b>.", "Fill to country, outfit allowance, visa and currency.", "Save."],
-          expect: ["Outfit Allowance, Visa and Currency sit together on one row.", "Visa and Outfit Allowance are Yes/No dropdowns.", "To Country replaces To Region.", "The saved imprest carries the chosen currency."]
+          id: "B-02", title: "Travel imprest — foreign", role: "Imprest holder", foreign: true,
+          steps: [
+            "New Imprest &rarr; type <b>Travel</b>, request type <b>Foreign Travel</b>.",
+            "Fill to country, outfit allowance, visa and currency. Save.",
+            "Add a member and fill the one local leg — the ride to the international airport.",
+            "On the ABB step book <b>Fare - Local</b>, then <b>Fare - Foreign</b> with a typed amount.",
+            "Attach the memo and plan, preview and submit."
+          ],
+          expect: [
+            "Outfit Allowance, Visa and Currency sit on one row.",
+            "The member carries exactly one leg, ending at an airport from the list, arriving the same day.",
+            "Fare - Local takes no typed amount; Fare - Foreign does, in the imprest currency.",
+            "The preview shows the foreign fare in the imprest currency and the local fare in TZS."
+          ]
         },
         {
-          id: "B-03", title: "Distance and transit note", role: "Any staff",
-          steps: ["On a local travel imprest, enter a from and to region a long bus ride apart.", "Set travel mode to Bus."],
-          expect: ["Distance and travel time appear once both ends are filled.", "A note says the journey may include transit time when it runs over six hours by bus.", "A failed lookup shows a message but does not block saving."]
+          id: "B-03", title: "Normal imprest", role: "Imprest holder",
+          steps: [
+            "New Imprest &rarr; type <b>Normal</b>.",
+            "Fill title/purpose, company, ABB owner and activity. Save.",
+            "On the ABB step add at least two particulars, each with an amount and a currency.",
+            "Attach the memo and plan, preview and submit."
+          ],
+          expect: [
+            "No travel fields (regions, dates, board type) are asked for.",
+            "Particulars list with S/N, particular, ABB code, amount and currency.",
+            "The preview shows no Budget section.",
+            "The imprest submits and lists as a Normal imprest."
+          ]
         },
         {
-          id: "B-04", title: "Raise a Micro Value imprest", role: "Any staff",
-          steps: ["Choose imprest type <b>Micro Value</b>.", "Fill purpose, micro number and amount.", "Add two or more item lines, each with its own account code, quantity and unit price.", "Save."],
-          expect: ["Each line totals quantity &times; unit price.", "Quantity and price are required and must be above zero.", "Amount fields group thousands with commas as you type.", "Travel fields (regions, dates, board type) are not asked for."]
-        },
-        {
-          id: "B-05", title: "Account lookup after choosing an activity", role: "Any staff",
-          pre: "Normal or Micro Value imprest only &mdash; a Travel imprest picks its ABBs on the ABB step.",
-          steps: ["Select company, ABB owner, then an activity.", "Watch the account code list populate."],
-          expect: ["The matching accounts load for that activity.", "No lookup fires on a Travel imprest."]
-        },
-        {
-          id: "B-06", title: "Reopen an imprest for update", role: "Owner",
-          pre: "Use an imprest already saved at step one.",
-          steps: ["Open the imprest and return to step one."],
-          expect: ["Imprest Type, Request Type, Entity Type and Board Type are greyed and cannot be changed.", "Every other field is editable and holds what was saved.", "On a Micro Value imprest the purpose, micro number, amount and all item lines come back filled in."]
+          id: "B-04", title: "Micro Value imprest", role: "Imprest holder",
+          steps: [
+            "New Imprest &rarr; type <b>Micro Value</b>.",
+            "Fill purpose, micro number from Nest and the amount requested.",
+            "Add two or more item lines, each with an account code, quantity and unit price. Save.",
+            "Complete the remaining steps, preview and submit."
+          ],
+          expect: [
+            "Each line totals quantity &times; unit price.",
+            "The preview shows the purpose, micro number, amount and every item line — none blank.",
+            "No Budget section is shown.",
+            "The imprest submits and lists as Micro Value."
+          ]
         }
       ]
     },
     {
       id: "C",
-      name: "Imprest creation — Members",
-      blurb: "Members carry the money: per diem and incidental from the staff service, fare from the legs they travel. A foreign imprest is the exception — it carries one local leg only, the ride to the international airport.",
+      name: "Step one in detail",
+      blurb: "The validations and behaviours of the first step, tested on their own rather than as part of a run.",
       cases: [
         {
-          id: "C-01", title: "Add a TRA staff member", role: "Owner",
-          steps: ["On step member, enter an employee number and fetch the staff details.", "Fill the journey and save."],
-          expect: ["Name, department, tax region, bank details and salary scale fill in from the lookup.", "Incidental amount is greyed and cannot be typed over.", "Per diem, incidental, fare and on-transit all group thousands.", "The member appears in the list below with their job title under their name."]
+          id: "C-01", title: "Required fields on a travel imprest", role: "Imprest holder",
+          steps: ["Try to save a travel imprest with board type, entity type and title left empty."],
+          expect: ["Board Type is required and blocks the save.", "Title / Purpose of Imprest is fully readable, not clipped.", "Each missing field is named."]
         },
         {
-          id: "C-02", title: "Add a non-staff traveller", role: "Owner",
-          steps: ["Switch to the non-staff form.", "Fill full name, gender, phone, email, work station and bank details.", "Choose a TRAS Band.", "Fill the journey and fare, then save."],
-          expect: ["The TRAS Band list is populated from the title service.", "There is no Job Title field on this form.", "Fare accepts a typed amount and groups thousands."]
+          id: "C-02", title: "Region suggestions", role: "Imprest holder",
+          steps: ["Type part of a place name into From Region and To Region."],
+          expect: ["Places are suggested as you type.", "Choosing one fills the field with the full place name."]
         },
         {
-          id: "C-03", title: "Several legs on a local journey", role: "Owner",
-          steps: ["Add a member with one leg, then use Add Trip for a second leg."],
-          expect: ["The new leg starts where the last one ended, on the day it ended.", "Each leg takes its own travel mode, location type and fare.", "An Official Vehicle leg forces the fare to zero and says why.", "The Add Trip dialog shows distance, travel time and a transit note instead of asking for an on-transit amount."]
+          id: "C-03", title: "Distance and transit note", role: "Imprest holder",
+          steps: ["Enter two regions a long bus ride apart and set travel mode to Bus."],
+          expect: ["Distance and travel time appear once both ends are filled.", "A note says the journey may include transit time when it runs over six hours by bus.", "A failed lookup shows a message but does not block saving."]
         },
         {
-          id: "C-04", title: "Foreign imprest carries one leg only", role: "Owner", foreign: true,
-          steps: ["On a foreign imprest, add a member.", "Fill the ride from the traveller's street to the international airport.", "Try to add a second leg."],
-          expect: ["The destination is chosen from the international airport list, not typed.", "Only Taxi and Official Vehicle are offered as travel modes.", "The leg must arrive on the day it departs.", "A second leg is refused, saying the journey to that city belongs to a separate imprest.", "The note above the member list says the fare is paid in TZS."]
+          id: "C-04", title: "Micro value item lines", role: "Imprest holder",
+          steps: ["Add a line with quantity zero, then with an empty price.", "Correct both and add a second line."],
+          expect: ["Quantity and price are required and must be above zero.", "Amounts group thousands with commas as you type.", "Each line keeps its own account code."]
         },
         {
-          id: "C-05", title: "Trip fare always reads in shillings", role: "Owner", foreign: true,
-          steps: ["On a foreign imprest denominated in USD, add a member with a fare.", "Read the member list row."],
-          expect: ["Trip fare shows as TZS regardless of the imprest currency.", "Per diem and incidental still show in the member's own currency."]
+          id: "C-05", title: "Account lookup after choosing an activity", role: "Imprest holder",
+          pre: "Normal or Micro Value only &mdash; a Travel imprest picks its ABBs on the ABB step.",
+          steps: ["Select company, ABB owner, then an activity."],
+          expect: ["The accounts for that activity load.", "No lookup fires on a Travel imprest."]
         },
         {
-          id: "C-06", title: "Update a member", role: "Owner",
-          steps: ["Open the three-dot menu on a member row and choose Update.", "Move through Member, Entitlements, Payment and Trips with the step controls."],
-          expect: ["The dialog moves section by section and never scrolls.", "Incidental is not editable.", "Travel mode defaults to Bus where none was stored.", "From and to region come back as stored.", "Other expenditures is saved."]
-        },
-        {
-          id: "C-07", title: "Update a member on a foreign imprest", role: "Owner", foreign: true,
-          steps: ["Open Update on a foreign imprest's member and go to Trips."],
-          expect: ["Only the fare can be changed.", "Dates, from, to, travel mode and location type are greyed.", "Saving sends the leg back unchanged apart from the fare."]
-        },
-        {
-          id: "C-08", title: "Remove a leg and remove a member", role: "Owner",
-          steps: ["Delete a single leg from a member with two.", "Then delete a member outright."],
-          expect: ["The update dialog closes first so the confirmation is visible.", "The member list reloads after confirming.", "Deleting a member removes all of their legs."]
-        },
-        {
-          id: "C-09", title: "No members yet", role: "Owner",
-          steps: ["Open step member on an imprest with no members."],
-          expect: ["A panel says no member has been added, in place of an empty table."]
+          id: "C-06", title: "Reopen a saved imprest", role: "Imprest holder",
+          steps: ["Open a saved imprest and return to step one."],
+          expect: ["Imprest Type, Request Type, Entity Type and Board Type are greyed and cannot be changed.", "Every other field holds what was saved.", "On a Micro Value imprest the purpose, micro number, amount and all item lines come back filled in."]
         }
       ]
     },
     {
       id: "D",
-      name: "Imprest creation — ABB and particulars",
-      blurb: "Where the money is booked. Categories worked out from the members are not typed; everything else is. On a foreign imprest the local fare and the journey abroad are booked separately and in different currencies.",
+      name: "Members",
+      blurb: "Members carry the money: per diem and incidental from the staff service, fare from the legs they travel. A foreign imprest is the exception — one local leg only, the ride to the international airport.",
       cases: [
         {
-          id: "D-01", title: "Book the per diem ABB", role: "Owner",
-          steps: ["On a travel imprest, select the per diem, incidental and day allowances ABB.", "Add it."],
-          expect: ["No amount box appears.", "The ABB is booked with the members' total.", "The same category cannot be added twice &mdash; it shows as already added."]
+          id: "D-01", title: "Add a TRA staff member", role: "Imprest holder",
+          steps: ["Enter an employee number and fetch the staff details.", "Fill the journey and save."],
+          expect: ["Name, department, tax region, bank details and salary scale fill in from the lookup.", "Incidental is greyed and cannot be typed over.", "All amounts group thousands.", "The member is listed with their job title under their name."]
         },
         {
-          id: "D-02", title: "Book Fare - Local", role: "Owner",
-          steps: ["Select the Fare - Local ABB."],
-          expect: ["No amount box appears.", "A panel names the figure it is about to book &mdash; the total of the members' trip fares.", "It is booked in TZS."]
+          id: "D-02", title: "Add a non-staff traveller", role: "Imprest holder",
+          steps: ["Switch to the non-staff form.", "Fill name, gender, phone, email, work station and bank details.", "Choose a TRAS Band, fill the journey and fare, and save."],
+          expect: ["The TRAS Band list is populated from the title service.", "There is no Job Title field on this form.", "Fare accepts a typed amount and groups thousands."]
         },
         {
-          id: "D-03", title: "Book Fare - Foreign", role: "Owner", foreign: true,
-          steps: ["On a foreign imprest, select the Fare - Foreign ABB.", "Type the fare for the journey abroad and add it."],
-          expect: ["An amount box appears, prefixed with the imprest currency.", "A note says it is booked in the currency the imprest was raised in.", "There is no separate currency picker."]
+          id: "D-03", title: "Several legs on a local journey", role: "Imprest holder",
+          steps: ["Add a member with one leg, then use Add Trip for a second."],
+          expect: ["The new leg starts where the last ended, on the day it ended.", "An Official Vehicle leg forces the fare to zero and says why.", "The Add Trip dialog shows distance, travel time and a transit note rather than asking for an on-transit amount."]
         },
         {
-          id: "D-04", title: "Particulars on a Normal imprest", role: "Owner",
-          steps: ["On a Normal imprest, add two particulars with amounts and currencies.", "Edit one, then remove the other."],
-          expect: ["The list shows S/N, particular, ABB code, amount and currency.", "Row actions sit behind a single three-dot menu.", "Edit and Remove are disabled on a row not yet saved."]
+          id: "D-04", title: "Foreign imprest carries one leg only", role: "Imprest holder", foreign: true,
+          steps: ["On a foreign imprest add a member and fill the ride to the international airport.", "Try to add a second leg."],
+          expect: ["The destination is chosen from the airport list, not typed.", "Only Taxi and Official Vehicle are offered.", "The leg must arrive the day it departs.", "A second leg is refused, saying the journey to that city belongs to a separate imprest."]
         },
         {
-          id: "D-05", title: "Fare booked warning", role: "Owner",
-          steps: ["On a travel imprest carrying a fare, press Next without booking a fare ABB."],
-          expect: ["A prompt asks whether to continue, naming the fare amount.", "It asks rather than refuses &mdash; continuing is allowed."]
+          id: "D-05", title: "Trip fare always reads in shillings", role: "Imprest holder", foreign: true,
+          steps: ["On a foreign imprest denominated in USD, add a member with a fare and read the list row."],
+          expect: ["Trip fare shows as TZS regardless of the imprest currency.", "Per diem and incidental still show in the member's own currency."]
+        },
+        {
+          id: "D-06", title: "Update a member", role: "Imprest holder",
+          steps: ["Open the three-dot menu on a member row and choose Update.", "Move through Member, Entitlements, Payment and Trips."],
+          expect: ["The dialog moves section by section and never scrolls.", "Incidental is not editable.", "Travel mode defaults to Bus where none was stored.", "From and to region come back as stored.", "Other expenditures is saved."]
+        },
+        {
+          id: "D-07", title: "Update a member on a foreign imprest", role: "Imprest holder", foreign: true,
+          steps: ["Open Update on a foreign imprest's member and go to Trips."],
+          expect: ["Only the fare can be changed.", "Dates, from, to, travel mode and location type are greyed.", "Saving sends the leg back unchanged apart from the fare."]
+        },
+        {
+          id: "D-08", title: "Remove a leg and remove a member", role: "Imprest holder",
+          steps: ["Delete a single leg from a member with two, then delete a member outright."],
+          expect: ["The update dialog closes first so the confirmation is visible.", "The list reloads after confirming.", "Deleting a member removes all of their legs."]
+        },
+        {
+          id: "D-09", title: "No members yet", role: "Imprest holder",
+          steps: ["Open the member step on an imprest with no members."],
+          expect: ["A panel says no member has been added, in place of an empty table."]
         }
       ]
     },
     {
       id: "E",
-      name: "Memo, activity plan, attachments and preview",
-      blurb: "The supporting documents, then the preview the owner submits from.",
+      name: "ABB and particulars",
+      blurb: "Where the money is booked. Categories worked out from the members are not typed; everything else is.",
       cases: [
         {
-          id: "E-01", title: "Attach a memo and an activity plan", role: "Owner",
-          steps: ["Work through the memo step and the activity plan step.", "Attach a supporting file."],
-          expect: ["The memo and plan save against the imprest.", "The attachment uploads and is listed."]
+          id: "E-01", title: "Book the per diem ABB", role: "Imprest holder",
+          steps: ["Select the per diem, incidental and day allowances ABB and add it."],
+          expect: ["No amount box appears.", "It is booked with the members' total.", "The same category cannot be added twice."]
         },
         {
-          id: "E-02", title: "Preview before submitting", role: "Owner",
-          steps: ["Open the last step.", "Expand and collapse each section in turn."],
-          expect: ["Sections open and close one at a time, predictably.", "Every figure is formatted with thousands and a currency.", "Members show their job title.", "Budget is not shown for Normal and Micro Value imprests.", "On a Micro Value imprest the purpose, micro number, amount and item table are all filled in."]
+          id: "E-02", title: "Book Fare - Local", role: "Imprest holder",
+          steps: ["Select the Fare - Local ABB."],
+          expect: ["No amount box appears.", "A panel names the figure it will book — the total of the members' trip fares.", "It is booked in TZS."]
         },
         {
-          id: "E-03", title: "Submit the imprest", role: "Owner",
-          steps: ["Submit from the preview."],
-          expect: ["The imprest leaves draft and appears in the list at the first approval stage.", "It can no longer be deleted from the list."]
+          id: "E-03", title: "Book Fare - Foreign", role: "Imprest holder", foreign: true,
+          steps: ["Select the Fare - Foreign ABB, type the fare and add it."],
+          expect: ["An amount box appears, prefixed with the imprest currency.", "A note says it is booked in the currency the imprest was raised in.", "There is no separate currency picker."]
+        },
+        {
+          id: "E-04", title: "Particulars on a Normal imprest", role: "Imprest holder",
+          steps: ["Add two particulars, edit one, remove the other."],
+          expect: ["Row actions sit behind a single three-dot menu.", "Edit and Remove are disabled on a row not yet saved."]
+        },
+        {
+          id: "E-05", title: "Fare booked warning", role: "Imprest holder",
+          steps: ["On a travel imprest carrying a fare, press Next without booking a fare ABB."],
+          expect: ["A prompt asks whether to continue, naming the fare amount.", "It asks rather than refuses."]
         }
       ]
     },
     {
       id: "F",
-      name: "Imprest list",
-      blurb: "The owner's own view of everything raised, with the search the API supports and the row actions each imprest's state allows.",
+      name: "Memo, plan, attachments and preview",
+      blurb: "The supporting documents, and the preview the holder submits from.",
       cases: [
         {
-          id: "F-01", title: "Active and cancelled tabs", role: "Any staff",
-          steps: ["Open the imprest list and switch between tabs."],
-          expect: ["Each tab pages independently and keeps its own search.", "Paging moves through pages rather than re-showing page one."]
+          id: "F-01", title: "Attach a memo and an activity plan", role: "Imprest holder",
+          steps: ["Work through the memo step and the activity plan step, then attach a file."],
+          expect: ["Both save against the imprest.", "The attachment uploads and is listed."]
         },
         {
-          id: "F-02", title: "Search the list", role: "Any staff",
-          steps: ["Search by reference number, then by request type, travel mode, holder name and to country.", "Open More filters and use a region field.", "Clear all filters."],
-          expect: ["Each filter narrows the whole list, not just the page on screen.", "Region and country fields suggest values the way step one does.", "The filter row does not scroll sideways.", "Clearing returns the full list from page one."]
+          id: "F-02", title: "Preview before submitting", role: "Imprest holder",
+          steps: ["Open the last step and expand each section in turn."],
+          expect: ["Sections open and close one at a time, predictably.", "Every figure is formatted with thousands and a currency.", "Members show their job title.", "Budget is not shown for Normal and Micro Value."]
         },
         {
-          id: "F-03", title: "Extension and Extended tags", role: "Any staff",
-          steps: ["Find an imprest raised as an extension and one that has been extended."],
-          expect: ["Each carries its own tag beside the reference number.", "Hovering a tag explains which side of the extension it is on."]
-        },
-        {
-          id: "F-04", title: "Facilitated column", role: "Any staff",
-          steps: ["Compare a safari imprest with an empty to-region against a non-safari imprest."],
-          expect: ["An empty to-region falls back to the country, on safari imprests only.", "Neither the facilitation nor the number of days shows on a non-safari imprest."]
-        },
-        {
-          id: "F-05", title: "Row actions", role: "Owner",
-          steps: ["Open the three-dot menu on a draft, on an approved imprest, and on one whose return date has passed."],
-          expect: ["View is always offered.", "Delete shows only on a draft.", "Extend shows only past Accounting Officer and on or before the return date."]
-        },
-        {
-          id: "F-06", title: "Extend an imprest", role: "Owner",
-          steps: ["Choose Extend, set the new from and to dates, and submit."],
-          expect: ["The extension is raised and step one of the new imprest opens.", "The original is tagged as extended."]
+          id: "F-03", title: "Submit", role: "Imprest holder",
+          steps: ["Submit from the preview."],
+          expect: ["The imprest leaves draft and enters the approval route.", "It can no longer be deleted from the list."]
         }
       ]
     },
     {
       id: "G",
-      name: "Approvals",
-      blurb: "Each stage sees a different set of buttons. Run this module once per approving role, on the same imprest, to walk it up the chain.",
+      name: "Approval routing — who it goes to",
+      blurb: "The first approver is the applicant's own supervisor, so the route depends on who raised the imprest. These cases are the heart of the workflow: run one per applicant level, each with a freshly raised imprest.",
       cases: [
         {
-          id: "G-01", title: "Supervisor forwards for review", role: "Supervisor",
-          steps: ["Open the imprest from Imprest Approval.", "Choose Forward for Review, add a comment and confirm."],
-          expect: ["Only Forward for Review and Return are offered at this stage.", "The imprest moves to Reviewer and leaves the supervisor's queue."]
+          id: "G-01", title: "Officer at headquarters raises an imprest", role: "Officer (HQ)",
+          steps: ["Raise and submit an imprest as an ordinary officer.", "Sign in as that officer's Manager."],
+          expect: ["The imprest appears in the Manager's approval queue as its first stop.", "It does not appear in any other manager's queue.", "The stage name shows Supervisor."]
         },
         {
-          id: "G-02", title: "Reviewer approves or forwards", role: "Reviewer",
-          steps: ["Open the same imprest as reviewer."],
-          expect: ["Approve and Forward for Approval are both offered.", "Return is still available."]
+          id: "G-02", title: "Manager raises an imprest", role: "Manager / Supervisor",
+          pre: "A manager cannot approve their own request &mdash; their supervisor is the Director.",
+          steps: ["Raise and submit an imprest as a Manager.", "Sign in as the Director."],
+          expect: ["The request goes to the <b>Director</b> as its first approver, not to another manager.", "It never appears in the applicant's own approval queue."]
         },
         {
-          id: "G-03", title: "Approve or reject", role: "Accounting Officer &rarr; Director of Finance",
-          steps: ["Open the imprest at each stage from Accounting Officer up to Director of Finance.", "Approve at each, then reject one on a separate imprest."],
-          expect: ["Approve Imprest and Reject Imprest are offered at every stage in that range.", "A rejection stops the imprest and records the comment.", "The stage name advances by one on each approval."]
+          id: "G-03", title: "Accounting Officer raises an imprest", role: "Accounting Officer",
+          steps: ["Raise and submit an imprest as the Accounting Officer.", "Sign in as the DCG."],
+          expect: ["The request goes to the <b>DCG</b> as its first approver.", "The Accounting Officer is not asked to approve their own request."]
         },
         {
-          id: "G-04", title: "Return an imprest to the owner", role: "Supervisor / Reviewer",
-          steps: ["Choose Return Imprest before the imprest passes Accounting Officer.", "Sign in as the owner."],
-          expect: ["The owner can open and correct it.", "The comment given on return is visible."]
+          id: "G-04", title: "DCG raises an imprest", role: "DCG",
+          steps: ["Raise and submit an imprest as the DCG.", "Sign in as the CG."],
+          expect: ["The request goes to the <b>CG</b>."]
         },
         {
-          id: "G-05", title: "Read an imprest under approval", role: "Any approver",
+          id: "G-05", title: "CG raises an imprest", role: "CG",
+          pre: "The CG and DCG supervise each other &mdash; this pairing is deliberate, not a loop to report as a fault.",
+          steps: ["Raise and submit an imprest as the CG.", "Sign in as the DCG."],
+          expect: ["The request goes to the <b>DCG</b>.", "No request is ever routed back to the person who raised it."]
+        },
+        {
+          id: "G-06", title: "Officer in a region raises an imprest", role: "Officer (Region)",
+          steps: ["Raise and submit an imprest as an officer attached to a region, not headquarters.", "Follow it through its first two approvers."],
+          expect: ["It goes first to that officer's own regional supervisor, not to a headquarters supervisor.", "The Accounting Officer step is performed by the <b>Regional Manager</b>.", "It does not appear in the headquarters Accounting Officer's queue at that stage."]
+        },
+        {
+          id: "G-07", title: "Department with a Reviewer routes through the Deputy Director", role: "Officer &rarr; Manager",
+          pre: "Raise this one from a department that <b>has</b> a Reviewer (its Deputy Director).",
+          steps: [
+            "Raise and submit an imprest from that department.",
+            "Approve it as the Manager.",
+            "Sign in as the Deputy Director who reviews for that department."
+          ],
+          expect: [
+            "After the Manager the request goes to the <b>Reviewer</b>, not straight to the Director.",
+            "It appears in that Deputy Director's queue and nobody else's.",
+            "The stage name shows Reviewer."
+          ]
+        },
+        {
+          id: "G-08", title: "Department with no Reviewer skips that stage", role: "Officer &rarr; Manager",
+          pre: "Raise this one from a department that has <b>no</b> Reviewer assigned.",
+          steps: [
+            "Raise and submit an imprest from that department.",
+            "Approve it as the Manager and follow where it lands."
+          ],
+          expect: [
+            "The request moves on without waiting for a Reviewer.",
+            "It is not held at a Reviewer stage that nobody can act on.",
+            "It reaches the next approver in the route directly."
+          ]
+        },
+        {
+          id: "G-09", title: "Deputy Director approves in place of the Accounting Officer", role: "Reviewer (Deputy Director)",
+          pre: "Use the imprest from G-07, sitting at the Reviewer stage.",
+          steps: [
+            "Open it as the Deputy Director.",
+            "Choose <b>Approve</b> rather than Forward for Approval.",
+            "Then raise a second imprest the same way and choose <b>Forward for Approval</b> instead."
+          ],
+          expect: [
+            "Both Approve and Forward for Approval are offered at this stage.",
+            "Approving here carries the request on without the Accounting Officer acting on it.",
+            "Forwarding instead sends it to the Accounting Officer as normal.",
+            "The trail records the Deputy Director as the approver in the first case.",
+            "Neither imprest is left sitting in two queues at once."
+          ]
+        },
+        {
+          id: "G-10", title: "Retirement follows the same routing", role: "All levels",
+          steps: ["Raise a retirement as an officer, then as a manager, then as an accounting officer.", "Check the first approver in each case."],
+          expect: ["Each retirement goes to the applicant's own supervisor, exactly as an imprest does.", "A region applicant's retirement stays in the region for the supervisor and manager stages."]
+        }
+      ]
+    },
+    {
+      id: "H",
+      name: "Approvals stage by stage",
+      blurb: "Each stage offers a different set of buttons. Run this module once per approving role, walking one imprest all the way up.",
+      cases: [
+        {
+          id: "H-01", title: "Supervisor forwards for review", role: "Supervisor",
+          steps: ["Open the imprest from Imprest Approval, choose Forward for Review, comment and confirm."],
+          expect: ["Only Forward for Review and Return are offered here.", "The imprest moves to Reviewer and leaves this queue."]
+        },
+        {
+          id: "H-02", title: "Reviewer approves or forwards", role: "Reviewer",
+          pre: "The choice here is the rule tested in G-09 &mdash; the Deputy Director decides whether the Accounting Officer still needs to see it.",
+          steps: ["Open the same imprest as reviewer.", "Note which buttons are offered before acting."],
+          expect: ["Approve and Forward for Approval are both offered.", "Return is still available.", "Only a department with a Reviewer reaches this stage at all."]
+        },
+        {
+          id: "H-03", title: "Approve or reject", role: "Accounting Officer &rarr; Director of Finance",
+          steps: ["Approve at each stage from Accounting Officer up to Director of Finance.", "Reject a different imprest at one of those stages."],
+          expect: ["Approve and Reject are offered at every stage in that range.", "A rejection stops the imprest and records the comment.", "The stage advances by one on each approval."]
+        },
+        {
+          id: "H-04", title: "Return an imprest to the holder", role: "Supervisor / Reviewer",
+          steps: ["Choose Return Imprest before the imprest passes Accounting Officer, then sign in as the holder."],
+          expect: ["The holder can open and correct it.", "The comment given on return is visible."]
+        },
+        {
+          id: "H-05", title: "Read an imprest under approval", role: "Any approver",
           steps: ["Open an imprest and work through its tabs."],
           expect: ["Members shows each member's bank name, account number and account name.", "Basic Details and Budget are not shown on Normal and Micro Value imprests.", "Memo and Attachment tabs are always present, saying so when empty.", "Title and description appear under Basic Details."]
         }
       ]
     },
     {
-      id: "H",
+      id: "I",
       name: "Assignment and posting to Epicor",
-      blurb: "At Incharge of Payment the imprest is handed to a named officer, who alone can post it. The same dialog serves retirements.",
+      blurb: "At Incharge of Payment the imprest is handed to a named officer, who alone can post it.",
       cases: [
         {
-          id: "H-01", title: "Assign an officer", role: "Incharge_Payment",
+          id: "I-01", title: "Assign an officer", role: "Incharge_Payment",
           pre: "An imprest sitting at Incharge of Payment.",
-          steps: ["Open the imprest and choose Assign Officer.", "Pick an officer the section has used before, add a comment, and assign."],
-          expect: ["The button only appears at this stage and for this role.", "A confirmation names the officer.", "The assignment panel now shows who holds it."]
+          steps: ["Open the imprest, choose Assign Officer, pick an officer used before, comment and assign."],
+          expect: ["The button appears only at this stage and for this role.", "A confirmation names the officer.", "The assignment panel shows who holds it."]
         },
         {
-          id: "H-02", title: "Assign an officer never used before", role: "Incharge_Payment",
-          steps: ["Choose Assign Officer and switch to looking an officer up.", "Enter an employee number and search."],
+          id: "I-02", title: "Assign an officer never used before", role: "Incharge_Payment",
+          steps: ["Choose Assign Officer, switch to looking one up, enter an employee number and search."],
           expect: ["The staff record is found and can be chosen.", "A single match is selected automatically."]
         },
         {
-          id: "H-03", title: "Reassign", role: "Incharge_Payment",
-          steps: ["Open an imprest already assigned and choose Reassign Officer.", "Pick a different officer."],
+          id: "I-03", title: "Reassign", role: "Incharge_Payment",
+          steps: ["Open an assigned imprest and choose Reassign Officer, then pick a different officer."],
           expect: ["The dialog says who currently holds it.", "The panel shows the new officer as active and the previous one as past."]
         },
         {
-          id: "H-04", title: "Officer sees their own queue", role: "Off_Incharge_Payment",
-          steps: ["Sign in as the assigned officer and open Assigned Imprests.", "Search by reference number, then clear."],
+          id: "I-04", title: "Officer sees their own queue", role: "Off_Incharge_Payment",
+          steps: ["Sign in as the assigned officer, open Assigned Imprests, search by reference number, then clear."],
           expect: ["Only imprests assigned to this officer are listed.", "The page carries the standard back bar, search card and table.", "Row actions sit behind a three-dot menu.", "An empty result says whether it is empty or merely filtered."]
         },
         {
-          id: "H-05", title: "Post to Epicor", role: "Off_Incharge_Payment",
-          steps: ["Open an assigned imprest from the queue and choose Post to Epicor.", "Then open the same imprest as a different officer."],
-          expect: ["Post to Epicor is offered only to the officer it is assigned to.", "Another officer at the same stage does not see the button.", "After posting, the imprest appears on Epicor Imprest Status."]
-        }
-      ]
-    },
-    {
-      id: "I",
-      name: "Retirement",
-      blurb: "Retirement mirrors the imprest side, including assignment. Run the assignment cases here against the retirement endpoints.",
-      cases: [
-        {
-          id: "I-01", title: "Raise and list a retirement", role: "Owner",
-          steps: ["Open Retirement List and raise a retirement against a funded imprest."],
-          expect: ["The retirement is created and listed.", "Its figures group thousands."]
-        },
-        {
-          id: "I-02", title: "Approve a retirement", role: "Approvers",
-          steps: ["Open Retirement Approval Request and act on the retirement."],
-          expect: ["Actions match the stage, as on the imprest side.", "Row actions sit behind a three-dot menu."]
-        },
-        {
-          id: "I-03", title: "Assign a retirement to an officer", role: "InchargeOfRetirement",
-          steps: ["Open a retirement at the assignment stage and assign an officer.", "Reassign it to a second officer."],
-          expect: ["The dialog is the same one used for imprests, worded for retirements.", "The assignment history panel lists current and past holders."]
-        },
-        {
-          id: "I-04", title: "Assigned retirements queue", role: "Assigned officer",
-          steps: ["Open Assigned Retirements."],
-          expect: ["The page matches Assigned Imprests in layout and behaviour.", "Only retirements assigned to this officer are listed."]
+          id: "I-05", title: "Post to Epicor", role: "Off_Incharge_Payment",
+          steps: ["Open an assigned imprest and choose Post to Epicor.", "Open the same imprest as a different officer."],
+          expect: ["Post to Epicor is offered only to the officer it is assigned to.", "Another officer at the same stage does not see the button.", "After posting it appears on Epicor Imprest Status."]
         }
       ]
     },
     {
       id: "J",
-      name: "Outstanding imprest and Epicor status",
-      blurb: "Two read-only views fed from Epicor. Both were brought onto the standard loading and error treatment, which is what these cases check.",
+      name: "Retirement",
+      blurb: "Retirement mirrors the imprest side, routing included. Module G-07 covers who it goes to; these cover the rest.",
       cases: [
         {
-          id: "J-01", title: "Outstanding imprest", role: "Any staff",
-          steps: ["Open Imprest &rarr; Outstanding Imprest."],
-          expect: ["A card with “Information loading, Please wait..” and a progress bar shows while it loads.", "Totals for debts, outstanding and paid amounts are shown above the table.", "Search narrows the table.", "With no debts, the page says so rather than showing an empty table."]
+          id: "J-01", title: "Raise a retirement", role: "Imprest holder",
+          steps: ["Open Retirement List and raise a retirement against a funded imprest."],
+          expect: ["The retirement is created and listed.", "Its figures group thousands."]
         },
         {
-          id: "J-02", title: "Epicor imprest status", role: "Any staff",
+          id: "J-02", title: "Approve a retirement", role: "Approvers",
+          steps: ["Open Retirement Approval Request and act on the retirement at each stage."],
+          expect: ["Actions match the stage, as on the imprest side.", "Row actions sit behind a three-dot menu."]
+        },
+        {
+          id: "J-03", title: "Assign a retirement to an officer", role: "InchargeOfRetirement",
+          steps: ["Assign an officer at the assignment stage, then reassign to a second officer."],
+          expect: ["The dialog is the one used for imprests, worded for retirements.", "The history panel lists current and past holders."]
+        },
+        {
+          id: "J-04", title: "Assigned retirements queue", role: "Assigned officer",
+          steps: ["Open Assigned Retirements."],
+          expect: ["The page matches Assigned Imprests in layout and behaviour.", "Only retirements assigned to this officer are listed."]
+        },
+        {
+          id: "J-05", title: "Retirement for a region applicant", role: "Officer (Region)",
+          steps: ["Raise a retirement as a regional officer and follow it to the manager stage."],
+          expect: ["It goes to the regional supervisor first.", "The Regional Manager acts in place of the headquarters Accounting Officer."]
+        }
+      ]
+    },
+    {
+      id: "K",
+      name: "Imprest list",
+      blurb: "The holder's view of everything raised, with the search the API supports and the row actions each imprest's state allows.",
+      cases: [
+        {
+          id: "K-01", title: "Active and cancelled tabs", role: "Any staff",
+          steps: ["Open the imprest list and switch between tabs, paging through each."],
+          expect: ["Each tab pages independently and keeps its own search.", "Paging moves through pages rather than re-showing page one."]
+        },
+        {
+          id: "K-02", title: "Search the list", role: "Any staff",
+          steps: ["Search by reference number, request type, travel mode, holder name and to country.", "Open More filters and use a region field, then clear all."],
+          expect: ["Each filter narrows the whole list, not just the page on screen.", "Region and country fields suggest values as step one does.", "The filter row does not scroll sideways.", "Clearing returns the full list from page one."]
+        },
+        {
+          id: "K-03", title: "Extension and Extended tags", role: "Any staff",
+          steps: ["Find an imprest raised as an extension and one that has been extended."],
+          expect: ["Each carries its own tag beside the reference number.", "Hovering explains which side of the extension it is on."]
+        },
+        {
+          id: "K-04", title: "Facilitated column", role: "Any staff",
+          steps: ["Compare a safari imprest with an empty to-region against a non-safari imprest."],
+          expect: ["An empty to-region falls back to the country, on safari imprests only.", "Neither facilitation nor number of days shows on a non-safari imprest."]
+        },
+        {
+          id: "K-05", title: "Row actions", role: "Imprest holder",
+          steps: ["Open the three-dot menu on a draft, on an approved imprest, and on one whose return date has passed."],
+          expect: ["View is always offered.", "Delete shows only on a draft.", "Extend shows only past Accounting Officer and on or before the return date."]
+        },
+        {
+          id: "K-06", title: "Extend an imprest", role: "Imprest holder",
+          steps: ["Choose Extend, set the new dates and submit."],
+          expect: ["The extension is raised and step one of the new imprest opens.", "The original is tagged as extended."]
+        }
+      ]
+    },
+    {
+      id: "L",
+      name: "Outstanding imprest and Epicor status",
+      blurb: "Two read-only views fed from Epicor.",
+      cases: [
+        {
+          id: "L-01", title: "Outstanding imprest", role: "Any staff",
+          steps: ["Open Imprest &rarr; Outstanding Imprest."],
+          expect: ["A card reading “Information loading, Please wait..” shows while it loads.", "Totals for debts, outstanding and paid amounts appear above the table.", "Search narrows the table.", "With no debts the page says so rather than showing an empty table."]
+        },
+        {
+          id: "L-02", title: "Epicor imprest status", role: "Any staff",
           steps: ["Open Imprest &rarr; Epicor Imprest Status."],
           expect: ["The same loading card shows as on the imprest list.", "Posted imprests are listed with their Epicor number and status."]
         },
         {
-          id: "J-03", title: "A failed load reports itself", role: "Any staff",
+          id: "L-03", title: "A failed load reports itself", role: "Any staff",
           pre: "Ask the team to take the Epicor endpoint down, or test with the network disconnected.",
           steps: ["Open each of the two pages above while the service is unavailable."],
           expect: ["An error dialog shows the message the API returned, not a generic one.", "The page offers a way to retry.", "No page is left blank with no explanation."]
@@ -967,29 +1396,29 @@
       ]
     },
     {
-      id: "K",
+      id: "M",
       name: "Across the whole system",
-      blurb: "Cross-cutting checks worth running once at the end, against whatever imprests the earlier modules produced.",
+      blurb: "Cross-cutting checks worth running once at the end, against the imprests the earlier modules produced.",
       cases: [
         {
-          id: "K-01", title: "Amounts group thousands everywhere", role: "Owner",
+          id: "M-01", title: "Amounts group thousands everywhere", role: "Imprest holder",
           steps: ["Walk from step one to the preview, typing a five or six figure amount into every money field you meet."],
-          expect: ["Every amount field groups thousands with commas as you type.", "Saved figures come back grouped, not as raw digits.", "No saved amount is ever stored or sent with its commas.", "Totals and halved figures (the infant allowance) calculate correctly from grouped input."]
+          expect: ["Every amount field groups thousands as you type.", "Saved figures come back grouped, not as raw digits.", "No amount is ever stored or sent with its commas.", "Totals and the halved infant allowance calculate correctly from grouped input."]
         },
         {
-          id: "K-02", title: "Slow or dropped connection", role: "Owner",
+          id: "M-02", title: "Slow or dropped connection", role: "Imprest holder",
           steps: ["Add or update a member on a slow connection."],
           expect: ["The request retries rather than failing at the first dropped connection.", "A genuine failure reports the API's own message."]
         },
         {
-          id: "K-03", title: "Back navigation", role: "Any",
+          id: "M-03", title: "Back navigation", role: "Any",
           steps: ["Use the Back control at the top of each list page."],
           expect: ["Back returns to the previous page rather than the dashboard every time."]
         },
         {
-          id: "K-04", title: "An account with no IMS role", role: "No IMS role",
-          steps: ["Sign in with an account holding no IMS role and try to open IMS."],
-          expect: ["No IMS menu entries or dashboard cards are offered.", "Opening a page directly does not expose data."]
+          id: "M-04", title: "One imprest, one trail", role: "Any approver",
+          steps: ["Take an imprest submitted in module B and open it at the end of the run."],
+          expect: ["Every comment left on approval, return, assignment and posting is visible in order.", "The stage and status shown match where the imprest actually is."]
         }
       ]
     }
@@ -1166,6 +1595,281 @@
     saveState(state);
     window.location.reload();
   });
+
+  /* -------------------------------------------------------- saved reports */
+  const REPORTS_KEY = "ims-uat-reports-v1";
+
+  function loadReports() {
+    try {
+      const list = JSON.parse(localStorage.getItem(REPORTS_KEY) || "[]");
+      return Array.isArray(list) ? list : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveReports(list) {
+    try {
+      localStorage.setItem(REPORTS_KEY, JSON.stringify(list));
+    } catch (e) {
+      window.alert("This browser would not store the report. Download it instead.");
+    }
+  }
+
+  let reports = loadReports();
+
+  const RESULT_LABEL = { pass: "Pass", fail: "Fail", na: "N/A" };
+
+  function esc(value) {
+    return String(value == null ? "" : value)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  /** Everything marked so far, frozen as one report. */
+  function snapshot() {
+    const meta = state.__meta || {};
+    const rows = [];
+    let pass = 0, fail = 0, na = 0;
+
+    MODULES.forEach(function (mod) {
+      mod.cases.forEach(function (tc) {
+        const entry = state[tc.id] || {};
+        if (entry.result === "pass") pass++;
+        else if (entry.result === "fail") fail++;
+        else if (entry.result === "na") na++;
+
+        rows.push({
+          module: mod.id + " \u00b7 " + mod.name,
+          id: tc.id,
+          title: tc.title,
+          role: tc.role,
+          result: entry.result || null,
+          note: entry.note || ""
+        });
+      });
+    });
+
+    return {
+      key: "r" + Date.now(),
+      tester: (meta.tester || "").trim() || "Unnamed tester",
+      runDate: (meta.date || "").trim(),
+      env: (meta.env || "").trim(),
+      savedAt: new Date().toISOString(),
+      total: totalCases,
+      pass: pass, fail: fail, na: na,
+      rows: rows
+    };
+  }
+
+  function savedStamp(report) {
+    const d = new Date(report.savedAt);
+    return isNaN(d.getTime()) ? report.savedAt : d.toLocaleString();
+  }
+
+  function reportFileName(report) {
+    const slug = report.tester.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+    return "uat-report-" + (slug || "tester") + "-" + report.savedAt.slice(0, 10) + ".html";
+  }
+
+  /** The report as a file of its own: opens anywhere, needs nothing else. */
+  function reportHtml(report) {
+    let body = "";
+    let current = "";
+
+    report.rows.forEach(function (row) {
+      if (row.module !== current) {
+        if (current) body += "</tbody></table>";
+        current = row.module;
+        body += "<h2>" + esc(current) + "</h2>" +
+          "<table><thead><tr><th>Case</th><th>Scenario</th><th>Role</th>" +
+          "<th>Result</th><th>Note</th></tr></thead><tbody>";
+      }
+
+      const cls = row.result ? "r-" + row.result : "r-none";
+      const label = row.result ? RESULT_LABEL[row.result] : "Not run";
+
+      body += "<tr><td class=\"mono\">" + esc(row.id) + "</td><td>" + esc(row.title) +
+        "</td><td class=\"mono dim\">" + esc(row.role) + "</td><td class=\"" + cls + "\">" +
+        esc(label) + "</td><td class=\"dim\">" + esc(row.note) + "</td></tr>";
+    });
+
+    if (current) body += "</tbody></table>";
+
+    return "<!doctype html>\n<html lang=\"en\"><head><meta charset=\"utf-8\">" +
+      "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">" +
+      "<title>UAT Report \u2014 " + esc(report.tester) + "</title><style>" +
+      "body{margin:0;background:#f2f5f6;color:#12222b;font:15px/1.55 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif}" +
+      ".wrap{max-width:960px;margin:0 auto;padding:40px 24px 80px}" +
+      "h1{font:600 32px/1.1 Georgia,'Times New Roman',serif;margin:0 0 6px}" +
+      ".sub{color:#46606b;margin:0 0 26px;font-size:14px}" +
+      ".meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:#d3dee1;border:1px solid #d3dee1;border-radius:6px;overflow:hidden;margin-bottom:22px}" +
+      ".meta div{background:#fff;padding:12px 14px}" +
+      ".meta span{display:block;font:11px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.08em;text-transform:uppercase;color:#7b929a;margin-bottom:4px}" +
+      ".tally{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}" +
+      ".tally b{display:block;font-size:22px;font-weight:600}" +
+      ".tally div{flex:1 1 110px;background:#fff;border:1px solid #d3dee1;border-radius:6px;padding:12px 14px;font:11px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.07em;text-transform:uppercase;color:#7b929a}" +
+      ".t-pass b{color:#2c6b45}.t-fail b{color:#9c2f2f}" +
+      "h2{font:600 19px/1.2 Georgia,serif;margin:34px 0 8px}" +
+      "table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #d3dee1;border-radius:6px;overflow:hidden;font-size:13.5px}" +
+      "th,td{text-align:left;padding:9px 12px;border-bottom:1px solid #e4ebed;vertical-align:top}" +
+      "thead th{font:400 10.5px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.07em;text-transform:uppercase;color:#7b929a;background:#eaf0f1}" +
+      "tbody tr:last-child td{border-bottom:none}" +
+      ".mono{font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:nowrap}" +
+      ".dim{color:#46606b}" +
+      ".r-pass{color:#2c6b45;font-family:ui-monospace,Consolas,monospace;font-size:12px}" +
+      ".r-fail{color:#9c2f2f;font-family:ui-monospace,Consolas,monospace;font-size:12px}" +
+      ".r-na,.r-none{color:#7b929a;font-family:ui-monospace,Consolas,monospace;font-size:12px}" +
+      "@media print{body{background:#fff}tr{break-inside:avoid}}" +
+      "</style></head><body><div class=\"wrap\">" +
+      "<h1>UAT Report \u2014 Imprest Management System</h1>" +
+      "<p class=\"sub\">Saved " + esc(savedStamp(report)) + "</p>" +
+      "<div class=\"meta\">" +
+        "<div><span>Tester</span>" + esc(report.tester) + "</div>" +
+        "<div><span>Date of run</span>" + esc(report.runDate || "\u2014") + "</div>" +
+        "<div><span>Environment</span>" + esc(report.env || "\u2014") + "</div>" +
+        "<div><span>Branch</span>imprest-main</div>" +
+      "</div>" +
+      "<div class=\"tally\">" +
+        "<div class=\"t-pass\"><b>" + report.pass + "</b>Passed</div>" +
+        "<div class=\"t-fail\"><b>" + report.fail + "</b>Failed</div>" +
+        "<div><b>" + report.na + "</b>Not applicable</div>" +
+        "<div><b>" + (report.total - report.pass - report.fail - report.na) + "</b>Not run</div>" +
+        "<div><b>" + report.total + "</b>Cases total</div>" +
+      "</div>" + body + "</div></body></html>";
+  }
+
+  function renderReports() {
+    const host = document.getElementById("reportList");
+    host.textContent = "";
+
+    if (!reports.length) {
+      const empty = document.createElement("p");
+      empty.className = "reports__empty";
+      empty.textContent = "No report saved yet. Work through the cases, then press Save report.";
+      host.appendChild(empty);
+      return;
+    }
+
+    reports.slice().reverse().forEach(function (report) {
+      const row = document.createElement("div");
+      row.className = "report-row";
+      row.innerHTML =
+        '<div class="report-row__name">' + esc(report.tester) +
+          '<small>' + esc(savedStamp(report)) +
+          (report.env ? " \u00b7 " + esc(report.env) : "") + '</small></div>' +
+        '<div class="report-row__tally">' +
+          '<span class="count-pass">' + report.pass + ' pass</span>' +
+          '<span class="count-fail">' + report.fail + ' fail</span>' +
+          '<span>' + (report.total - report.pass - report.fail - report.na) + ' not run</span>' +
+        '</div>' +
+        '<div class="report-row__acts">' +
+          '<button class="mini" data-act="open" type="button">Open</button>' +
+          '<button class="mini" data-act="download" type="button">Download</button>' +
+          '<button class="mini mini--danger" data-act="delete" type="button">Delete</button>' +
+        '</div>';
+
+      row.querySelector('[data-act="open"]').addEventListener("click", function () {
+        openReport(report);
+      });
+
+      row.querySelector('[data-act="download"]').addEventListener("click", function () {
+        downloadReport(report);
+      });
+
+      row.querySelector('[data-act="delete"]').addEventListener("click", function () {
+        if (!window.confirm("Delete " + report.tester + "'s report saved " + savedStamp(report) + "?")) {
+          return;
+        }
+        reports = reports.filter(function (r) { return r.key !== report.key; });
+        saveReports(reports);
+        renderReports();
+      });
+
+      host.appendChild(row);
+    });
+  }
+
+  function downloadReport(report) {
+    const blob = new Blob([reportHtml(report)], { type: "text/html;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = reportFileName(report);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+  }
+
+  const viewer = document.getElementById("viewer");
+  const viewerTitle = document.getElementById("viewerTitle");
+  const viewerBody = document.getElementById("viewerBody");
+  let viewerReport = null;
+
+  function openReport(report) {
+    viewerReport = report;
+    viewerTitle.textContent = "UAT Report \u2014 " + report.tester;
+
+    let html =
+      '<p style="color:var(--ink-soft);font-size:13.5px">Saved ' + esc(savedStamp(report)) +
+      (report.env ? " &middot; " + esc(report.env) : "") +
+      (report.runDate ? " &middot; run " + esc(report.runDate) : "") + '</p>';
+
+    let current = "";
+    report.rows.forEach(function (row) {
+      if (row.module !== current) {
+        if (current) html += "</tbody></table>";
+        current = row.module;
+        html += "<h4>" + esc(current) + "</h4><table><thead><tr><th>Case</th><th>Scenario</th>" +
+          "<th>Result</th><th>Note</th></tr></thead><tbody>";
+      }
+
+      const cls = row.result ? "r-" + row.result : "r-none";
+      const label = row.result ? RESULT_LABEL[row.result] : "Not run";
+      html += "<tr><td>" + esc(row.id) + "</td><td>" + esc(row.title) + "</td><td class=\"" +
+        cls + "\">" + esc(label) + "</td><td>" + esc(row.note) + "</td></tr>";
+    });
+    if (current) html += "</tbody></table>";
+
+    viewerBody.innerHTML = html;
+    viewer.hidden = false;
+  }
+
+  document.getElementById("viewerClose").addEventListener("click", function () {
+    viewer.hidden = true;
+  });
+
+  document.getElementById("viewerDownload").addEventListener("click", function () {
+    if (viewerReport) downloadReport(viewerReport);
+  });
+
+  viewer.addEventListener("click", function (e) {
+    if (e.target === viewer) viewer.hidden = true;
+  });
+
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !viewer.hidden) viewer.hidden = true;
+  });
+
+  document.getElementById("save").addEventListener("click", function () {
+    const meta = state.__meta || {};
+    if (!(meta.tester || "").trim()) {
+      const who = window.prompt("Save this report under which tester name?", "");
+      if (who === null) return;
+      state.__meta = state.__meta || {};
+      state.__meta.tester = who.trim();
+      saveState(state);
+      document.getElementById("meta-tester").value = state.__meta.tester;
+    }
+
+    reports.push(snapshot());
+    saveReports(reports);
+    renderReports();
+    document.getElementById("reports").scrollIntoView({ block: "nearest" });
+  });
+
+  renderReports();
 
   tally();
 </script>
